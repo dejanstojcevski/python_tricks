@@ -4,7 +4,7 @@ import shelve
 def readdb():
     db = shelve.open('people-shelve')
     for key in db:
-        print(key, '=>\n ', db[key])
+        print(key, '=> ', db[key])
     db.close()
 
 # read single record from the database
@@ -33,6 +33,8 @@ class Person():
         self.addr=addr
     def __repr__(self):
         return('Ime: %s; Telefon: %s; Adresa: %s' % (self.name,self.tel,self.addr))
+    def change_name(self,newname):
+        self.name=newname
 
 dejan=Person('075400639','Dejan Stojcevski','bul. Vidoe smilevski - Bato No 44/16')
 boban=Person('075300123','Boban Stojcevski','bul. Metodija Mitevski No 13 4/4')
