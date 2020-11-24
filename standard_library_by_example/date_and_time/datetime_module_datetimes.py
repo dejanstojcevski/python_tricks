@@ -22,6 +22,7 @@ for attr in FIELDS:
 
 # printing the value of the datetime.datetime instance with different formats
 print(dt.strftime('%Y-%m-%d %H:%M:%S'))
+print(dt.timestamp()) # from datetime object to timestamp
 
 # comparing values
 if dt>datetime.datetime.strptime('2003-3-23 10:54:34','%Y-%m-%d %H:%M:%S'): print(True)
