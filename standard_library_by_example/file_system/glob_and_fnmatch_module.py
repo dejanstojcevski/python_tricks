@@ -34,3 +34,10 @@ print()
 files = os.listdir('.')
 for name in files:
     print('Filename: {:<30} {}'.format(name, fnmatch.fnmatchcase(name, pattern)))
+
+# glob.iglob returns iterator which can be used to iterate over files one by one
+print('=' * 40 ,' glob Iterator ','=' * 40)
+it=glob.iglob('learning_python/*')
+for file in it:
+    # do whatever you want with the files one by one
+    print(os.path.abspath(file))

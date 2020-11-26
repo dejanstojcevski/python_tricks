@@ -1,4 +1,4 @@
-import os,time
+import os,time,glob
 
 # first group of functions in this module just parses strings which represent paths in the file system
 # they are based on os module attributes: os.sep, os.extsep, os.pardir, os.curdir
@@ -54,3 +54,12 @@ for file in os.listdir():
     print('Mountpoint? :',os.path.ismount(file))
     print('Exists?     :',os.path.exists(file))
     print('Link Exists?:',os.path.lexists(file))
+
+# Some random File tricks
+print('=' * 40,' Some random file tricks ' , '=' * 40)
+for items in list(filter(os.path.isfile,glob.glob('*module*'))): # listing only files (or directories or links or ...) which match specific pattern
+    print(os.path.abspath(items))
+
+print(os.path.expanduser('~'))          # getting user's home dir
+
+print(os.path.splitext('os.path_module.py')[0]) # splitext functions returns tuple with everything up to the extension of file and the extension itself
