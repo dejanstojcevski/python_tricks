@@ -1,40 +1,41 @@
 # shutil module help us in copying / moving files/directories
 # also has several other tools
 
-import shutil,os
+import shutil,tarfile,os
 
-source = os.listdir("/tmp/")
-destination = "/tmp/newfolder/"
-for files in source:
-    if files.endswith(".txt"):
-        shutil.copy(files, destination) # copy file to dest directory. permissions of the file are preserved
-        shutil.copy2(files,destination) # copy file to dest directory. permissions + access and modification times are preserved
+######## File system space
+print('='*40,' File System Space ','='*40)
+total_b, used_b, free_b = shutil.disk_usage('.')
+gib = 2 ** 30  # GiB == gibibyte
+gb = 10 ** 9   # GB  == gigabyte
+print('Total: {:6.2f} GB  {:6.2f} GiB'.format(total_b / gb, total_b / gib))
+print('Used : {:6.2f} GB  {:6.2f} GiB'.format(used_b / gb, used_b / gib))
+print('Free : {:6.2f} GB  {:6.2f} GiB'.format(free_b / gb, free_b / gib))
+'''
+######## Managing Archives
+print('='*40,' Archives ','='*40)
+for format, description in shutil.get_archive_formats():
+    print('{:<5}: {}'.format(format, description))
 
-shutil.copyfile('/path/to/file', '/path/to/other/phile') # copy file to file (possibly renaming the file)
+print('Creating archive:')
+shutil.make_archive('file_system','gztar',root_dir='..',base_dir='file_system')
+print('Archve contents:')
+with tarfile.open('file_system.tar.gz', 'r') as t:
+    for n in t.getnames():
+        print(n)
 
-############
-# recursively move a file or directory (src) to another location (dst).
-# if the destination is a directory or a symlink to a directory, then src is moved inside that directory.
-# the destination directory must not already exist.
-# this would move files ending with .txt to the destination path
+# which archive types shutil can manage to open
+print('shutil managed archive formats:')
+for format, exts, description in shutil.get_unpack_formats():
+    print('{:<5}: {}, names ending in {}'.format(format, description, exts))
 
-source = os.listdir("/tmp/")
-destination = "/tmp/newfolder/"
-for files in source:
-    if files.endswith(".txt"):
-        shutil.move(files, destination) # move file to dir
-
-####################
-# recursively copy the entire directory tree rooted at src to dest.
-# dest must not already exist.
-# errors are reported to standard output
-
-SOURCE = "samples"
-BACKUP = "samples-bak"
-shutil.copytree(SOURCE, BACKUP)
-
-####################
-# recursively delete a directory tree.
-# This removes the directory 'three' and anything beneath it in the filesystem.
-
-shutil.rmtree('one/two/three')
+# extracting archive
+os.mkdir('extracted_archive')
+shutil.unpack_archive('file_system.tar.gz','extracted_archive')
+'''
+######### Copy/Move files
+shutil.copyfile('shutil_module.py','shutil_module2.py')     # copy file to file
+os.unlink('shutil_module2.py')
+shutil.copy('shutil_module.py','newdir')                    # copy file to file or directory (if second argument is a dir) along with file permissions
+shutil.copy2('shutil_modue.py','newdir')                    # copy file to file or dir along with file attributes (ctime, mtime, atime)
+shutil.move('shutil_module.py','shutil_module2.py')         # moving file (renaming)
